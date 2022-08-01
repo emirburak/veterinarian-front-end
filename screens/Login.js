@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import * as SecureStore from "expo-secure-store";
 
 import axios from "axios";
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [response, setResponse] = useState("");
   const [status, setStatus] = useState(null);
-  const [counter, setCounter] = useState(0);
+  const [vetId, setVetId] = useState("");
 
   //change
   const handleSignUp = () => {
@@ -36,12 +36,16 @@ const Login = ({ navigation }) => {
     };
 
     const { data, status } = await axios.post(
+      //"http://localhost:8080/api/auth/signin",
       "http:192.168.1.31:8080/api/auth/signin",
       values,
       headers
-    ); //http:192.168.1.31:8080/api/auth/signin for mobile
-    setResponse(data);
+    );
     setStatus(status);
+    setVetId(data.id);
+
+    await SecureStore.setItemAsync("secure_token", data.accessToken);
+    await SecureStore.setItemAsync("vet-id", vetId);
   };
 
   useEffect(() => {

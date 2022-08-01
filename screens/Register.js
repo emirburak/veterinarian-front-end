@@ -8,14 +8,13 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
 const Register = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [roles, setRoles] = useState([]);
   const [vetName, setVetName] = useState("");
-
   const [response, setResponse] = useState("");
   const [status, setStatus] = useState(null);
 
@@ -34,8 +33,9 @@ const Register = ({ navigation }) => {
       },
     };
 
-    const { data, status } = await axios.post(
-      "http://192.168.1.31:8080/api/auth/signup",
+    const { data, status, accessToken } = await axios.post(
+      "http://localhost:8080/api/auth/signup",
+      //"http://192.168.1.31:8080/api/auth/signup",
       values,
       headers
     );
